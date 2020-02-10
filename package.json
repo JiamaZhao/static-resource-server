@@ -4,8 +4,13 @@
   "description": "node static resource server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "elinit": "elint .",
+    "eslinit-fix": "eslint --fix ."
   },
+  "pre-commit": [
+    "elinit"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pdd-jiama/static-resource-server.git"
@@ -19,5 +24,9 @@
   "bugs": {
     "url": "https://github.com/pdd-jiama/static-resource-server/issues"
   },
-  "homepage": "https://github.com/pdd-jiama/static-resource-server#readme"
+  "homepage": "https://github.com/pdd-jiama/static-resource-server#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "pre-commit": "^1.2.2"
+  }
 }
