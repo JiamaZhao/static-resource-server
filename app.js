@@ -4,8 +4,12 @@ const defaultConfig = require('./config/defaultConfig');
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
+  res.setHeader('Content-Type', 'text/html');
+  res.write('<html>');
+  res.write('<body>');
+  res.write('hello nodejs')
+  res.write('<body/>');
+  res.end('<html/>');
 });
 
 server.listen(defaultConfig.port, defaultConfig.hostname, () => {
