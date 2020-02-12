@@ -1,14 +1,10 @@
 const chalk = require('chalk');
 const fs = require('fs');
+const  {promises: promisesFs} = fs;
 
-module.exports = function(req, res, filePath) {
-    fs.stat(filePath, (err, stats) => {
-        if (err) {
-            res.statusCode = 404;
-            res.setHeader('Content-Type', 'text/plain');
-            res.end(err.toString());
-            return;
-        }
+module.exports = async function(req, res, filePath) {
+    try {
+        const stats = await promisesFs.stat(filePath);
         if (stats.isFile()) {
             console.log(chalk.yellow('当前是文件'));
             res.statusCode = 200;
@@ -27,5 +23,9 @@ module.exports = function(req, res, filePath) {
                 res.end(files.join(','));
             });
         }
-    });
-}
+    } catch (err) {
+        res.statusCode = 404;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end(err.toString());
+    }
+};
