@@ -1,5 +1,7 @@
 const chalk = require('chalk');
 const fs = require('fs');
+const path = require('path');
+const ejs = require('ejs');
 const  {promises: promisesFs} = fs;
 
 module.exports = async function(req, res, filePath) {
@@ -9,7 +11,7 @@ module.exports = async function(req, res, filePath) {
             console.log(chalk.yellow('当前是文件'));
             res.statusCode = 200;
             res.setHeader('Content-Type', 'text/html');
-            fs.createReadStream(filePath).pipe(res); // 用createStream比readFile好
+            fs.createReadStream(filePath).pipe(res); // s用createStream比readFile好
         } else if (stats.isDirectory()) {
             console.log(chalk.yellow('当前是文件夹'));
             fs.readdir(filePath, (err, files) => {
@@ -18,8 +20,14 @@ module.exports = async function(req, res, filePath) {
                     res.end(err.toString());
                     return;
                 }
+                const tplPath = path.join(__dirname, 'template/index.html');
+                const tplStr = fs.readFileSync(tplPath).toString(); //todo: 尝试异步
                 res.statusCode = 200;
-                res.setHeader('content-type', 'text/plain');
+                res.setHeader('content-type', 'text/html');
+                const html = ejs.render(tplStr, {
+                    test: '加玛'
+                });
+                res.end(html);
                 res.end(files.join(','));
             });
         }
