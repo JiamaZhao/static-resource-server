@@ -11,9 +11,9 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(defaultConfig.port, defaultConfig.hostname, () => {
-	console.log(
-		chalk.green(
-			`Server running at http://${defaultConfig.hostname}:${defaultConfig.port}/`
-		)
-	);
+    console.log(
+        chalk.green(
+            `Server running at http://${defaultConfig.hostname}:${defaultConfig.port}/`
+        )
+    );
 });
