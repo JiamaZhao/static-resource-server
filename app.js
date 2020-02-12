@@ -11,7 +11,7 @@ const server = http.createServer((req, res) => {
         if (err) {
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/plain');
-            res.end(404);
+            res.end('404');
             return;
         }
         if (stats.isFile()) {
@@ -24,7 +24,7 @@ const server = http.createServer((req, res) => {
             fs.readdir(filePath, (err, files) => {
                 if (err) {
                     console.error(err);
-                    res.end(404);
+                    res.end('404');
                     return;
                 }
                 res.statusCode = 200;
