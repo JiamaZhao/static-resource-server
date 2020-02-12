@@ -14,20 +14,25 @@ const server = http.createServer((req, res) => {
             res.end(404);
             return;
         }
-        res.statusCode = 200;
         if (stats.isFile()) {
+            console.log(chalk.yellow('当前是文件'));
+            res.statusCode = 200;
             res.setHeader('Content-Type', 'text/plain');
             fs.createReadStream(filePath).pipe(res); // 用createStream比readFile好
-        } else if () {
-
+        } else if (stats.isDirectory()) {
+            console.log(chalk.yellow('当前是文件夹'));
+            fs.readdir(filePath, (err, files) => {
+                if (err) {
+                    console.error(err);
+                    res.end(404);
+                    return;
+                }
+                res.statusCode = 200;
+                res.setHeader('content-type', 'text/plain');
+                res.end(files.join(','));
+            });
         }
     });
-	res.write('<html>');
-	res.write('<body>');
-
-	res.write(filePath);
-	res.write('<body/>');
-	res.end('<html/>');
 });
 
 server.listen(defaultConfig.port, defaultConfig.hostname, () => {
