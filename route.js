@@ -21,14 +21,15 @@ module.exports = async function(req, res, filePath) {
                     return;
                 }
                 const tplPath = path.join(__dirname, 'template/index.html');
-                const tplStr = fs.readFileSync(tplPath).toString(); //todo: 尝试异步
+                const tplStr = fs.readFileSync(tplPath).toString(); //TODO: 异步
                 res.statusCode = 200;
                 res.setHeader('content-type', 'text/html');
+                const dir = path.relative(process.cwd(), filePath); // 相对于根目录的路径这个文件的路径；process.cwd()返回当前工作目录。如：调用node命令执行脚本时的目录
                 const html = ejs.render(tplStr, {
-                    test: '加玛'
+                    files,
+                    dir: path.join('../', dir) 
                 });
                 res.end(html);
-                res.end(files.join(','));
             });
         }
     } catch (err) {

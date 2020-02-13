@@ -7,6 +7,10 @@
     <title>我是模板</title>
 </head>
 <body>
-    <div><%= test %></div>
+    <div>此文件夹所包含文件列表：</div><br/>
+    <% files.forEach(function(item) { %>
+        <!-- <a href=<%= item %>/> -->
+            <a href="<%=dir%>/<%=item%>"><%= item %></a><br/>
+    <% }) %> 
 </body>
 </html>
