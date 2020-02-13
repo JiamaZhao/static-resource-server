@@ -12,7 +12,7 @@ module.exports = async function(req, res, filePath) {
             console.log(chalk.yellow('当前是文件'));
             res.statusCode = 200;
             const mimeType = mime.getType(path.extname(filePath));
-            res.setHeader('Content-Type', mimeType);
+            res.setHeader('Content-Type', `${mimeType};charset=utf-8;`);
             fs.createReadStream(filePath).pipe(res); // s用createStream比readFile好
         } else if (stats.isDirectory()) {
             console.log(chalk.yellow('当前是文件夹'));
