@@ -2,6 +2,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
+const mime = require('mime');
 const  {promises: promisesFs} = fs;
 
 module.exports = async function(req, res, filePath) {
@@ -10,7 +11,8 @@ module.exports = async function(req, res, filePath) {
         if (stats.isFile()) {
             console.log(chalk.yellow('当前是文件'));
             res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html');
+            const mimeType = mime.getType(path.extname(filePath));
+            res.setHeader('Content-Type', mimeType);
             fs.createReadStream(filePath).pipe(res); // s用createStream比readFile好
         } else if (stats.isDirectory()) {
             console.log(chalk.yellow('当前是文件夹'));
