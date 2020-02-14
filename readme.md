@@ -12,6 +12,7 @@ npm i eslint -D
 * [ ] 安装supervisor服务(原理fs.watch): npm i supervisor -g && supervisor app.js  
 * [ ] 引入ejs  
 * [ ] 支持压缩compress  
+* [ ] 强缓存+协商缓存  
 * [ ] 切koa2或者express    
 * [ ] ts  
 

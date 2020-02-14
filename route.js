@@ -4,6 +4,7 @@ const path = require('path');
 const ejs = require('ejs');
 const mime = require('mime');
 const compress = require('./tools/compress');
+const isCacheValid = require('./tools/isCacheValid')
 const  { promises: promisesFs } = fs;
 
 module.exports = async function(req, res, filePath) {
@@ -11,6 +12,11 @@ module.exports = async function(req, res, filePath) {
         const stats = await promisesFs.stat(filePath);
         if (stats.isFile()) {
             console.log(chalk.yellow('当前是文件'));
+            if (isCacheValid(stats, req, res)) {
+                res.statusCode = 304;
+                res.end();
+                return;
+            }
             res.statusCode = 200;
             const mimeType = mime.getType(path.extname(filePath));
             res.setHeader('Content-Type', `${mimeType};charset=utf-8;`);
