@@ -11,6 +11,7 @@ npm i eslint -D
 => eslint自动强制修复:安装pre-commit包或者git配置pre-commit,配置git hook基于shell暂时用包吧
 * [ ] 安装supervisor服务(原理fs.watch): npm i supervisor -g && supervisor app.js  
 * [ ] 引入ejs  
+* [ ] 支持压缩compress  
 * [ ] 切koa2或者express    
 * [ ] ts  
 

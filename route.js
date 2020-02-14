@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
 const mime = require('mime');
-const  {promises: promisesFs} = fs;
+const compress = require('./tools/compress');
+const  { promises: promisesFs } = fs;
 
 module.exports = async function(req, res, filePath) {
     try {
@@ -13,7 +14,9 @@ module.exports = async function(req, res, filePath) {
             res.statusCode = 200;
             const mimeType = mime.getType(path.extname(filePath));
             res.setHeader('Content-Type', `${mimeType};charset=utf-8;`);
-            fs.createReadStream(filePath).pipe(res); // s用createStream比readFile好
+            let rs = fs.createReadStream(filePath);
+            rs = compress(rs, req, res); // 开启gzip压缩，package-lock.json: 43.5KB => 8.8KB
+            rs.pipe(res); // s用createStream比readFile好
         } else if (stats.isDirectory()) {
             console.log(chalk.yellow('当前是文件夹'));
             fs.readdir(filePath, (err, files) => {
@@ -37,6 +40,7 @@ module.exports = async function(req, res, filePath) {
     } catch (err) {
         res.statusCode = 404;
         res.setHeader('Content-Type', 'text/plain');
+        console.error(chalk.red(err.toString()))
         res.end(err.toString());
     }
 };
