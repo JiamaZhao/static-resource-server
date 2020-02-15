@@ -17,17 +17,28 @@ function refreshRes(stats, res) {
      * }
      */
     if (cacheControl) {
-        res.setHeader('Cache-Control', `public, max-age=${maxAge}`);
+        res.setHeader('Cache-Control', `public, max-age=${maxAge}`); // 设置强缓存，刷新页面没有用的，要再打开一个新标签，才会生效，在network面板的size选项可看到‘disk Cache’
     }
     if (lastModified) {
         res.setHeader('Last-Modified', stats.mtime.toUTCString()); // stats.atime上次访问时间；stats.mtime上次修改时间;stats.ctime创建时间
     }
     if (etag) {
-        res.setHeader('ETag', `${stats.size}-${stats.mtime.toUTCString()}`);
+        res.setHeader('ETag', `${stats.size}_${Date.parse(stats.mtime)}`); // if-none-match似乎有长度限制，客户端得到
     }
 }
 module.exports = function isCacheValid(stats, req, res) {
     refreshRes(stats, res);
-    return false;
+    const ifModifiedSince = req.headers['if-modified-since'];
+    const ifNoneMatch = req.headers['if-none-match'];
+    if (!ifModifiedSince && !ifNoneMatch) {
+        return false;
+    }
+    if (ifModifiedSince && ifModifiedSince !== res.getHeader('Last-Modified')) {
+        return false;
+    }
+    if (ifNoneMatch && ifNoneMatch !== res.getHeader('ETag')) {
+        return false;
+    }
+    return true;
 }
 
