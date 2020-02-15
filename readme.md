@@ -13,7 +13,8 @@ npm i eslint -D
 * [x] ejs模板  
 * [x] gzip/deflet压缩  
 * [x] 强缓存+协商缓存  
-* [x] 发布npm
+* [x] 支持命令行参数
+* [x] 发布npm，做成cli工具
 * [ ] 切koa2或者express    
 * [ ] ts  
 

@@ -7,7 +7,7 @@ const compress = require('./tools/compress');
 const isCacheValid = require('./tools/isCacheValid')
 const  { promises: promisesFs } = fs;
 
-module.exports = async function(req, res, filePath) {
+module.exports = async function(req, res, filePath, root) {
     try {
         const stats = await promisesFs.stat(filePath);
         if (stats.isFile()) {
@@ -35,7 +35,7 @@ module.exports = async function(req, res, filePath) {
                 const tplStr = fs.readFileSync(tplPath).toString(); //TODO: 异步
                 res.statusCode = 200;
                 res.setHeader('content-type', 'text/html');
-                const dir = path.relative(process.cwd(), filePath); // 相对于根目录的路径这个文件的路径；process.cwd()返回当前工作目录。如：调用node命令执行脚本时的目录
+                const dir = path.relative(root || process.cwd(), filePath); // 相对于根目录的路径这个文件的路径；process.cwd()返回当前工作目录。如：调用node命令执行脚本时的目录
                 const html = ejs.render(tplStr, {
                     files,
                     dir: path.join('../', dir) 
