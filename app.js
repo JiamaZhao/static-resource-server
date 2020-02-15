@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const defaultConfig = require('./config/defaultConfig');
 const route = require('./route');
-
+const openUrlInBrowser = require('./tools/openUrlInBrowser');
 
 class Server {
     constructor(config) {
@@ -15,6 +15,7 @@ class Server {
             const filePath = path.join(this.config.root, url);
             route(req, res, filePath, this.config.root);
         });
+        openUrlInBrowser(`http://${this.config.hostname}:${this.config.port}/`); // 自动打开浏览器
 
         server.listen(this.config.port, this.config.hostname, () => {
             console.log(

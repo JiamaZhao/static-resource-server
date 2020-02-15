@@ -14,6 +14,7 @@ npm i eslint -D
 * [x] gzip/deflet压缩  
 * [x] 强缓存+协商缓存  
 * [x] 支持命令行参数
+* [x] 自动打开浏览器
 * [x] 发布npm，做成cli工具
 * [ ] 切koa2或者express    
 * [ ] ts  
